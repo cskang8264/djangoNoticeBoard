@@ -1,0 +1,38 @@
+{% extends 'blog/layout.html' %}
+{% block content %} 
+{% load crispy_forms_tags %}
+
+    <!-- <form action="{% url 'create' %}">
+        <h4>제목: </h4>
+        <input type="text" name="title">
+        <h4>본문: </h4>
+        <textarea cols="40" rows="10" name="body"></textarea>
+        <input class="btn btn-dark" type="submit" value="제출하기">
+
+    </form> -->
+
+    <!-- <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{form.as_p}}
+        </table>
+        <input class="btn btn-dark" type="submit" value="제출하기">
+    </form> -->
+
+    <form method="POST">
+            {% csrf_token %}
+        <div class="form-group">
+            
+                {{ form.title|as_crispy_field }}
+                {{ form.body|as_crispy_field }}
+        </div>
+
+        <input class="btn btn-dark" type="submit" value="제출하기">
+      </form>
+{% endblock %}
+
+
+
+<!-- {{form.as_table}} -> form의 내용이 table 형식으로 출력
+{{form.as_p}} -> form의 내용이 p 형식으로 출력
+{{form.as_ul}} -> form의 내용이 ul 형식으로 출력 -->

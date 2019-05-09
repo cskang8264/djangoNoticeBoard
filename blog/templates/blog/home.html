@@ -1,0 +1,30 @@
+{% extends 'blog/layout.html' %}
+
+
+{% block content %}
+
+<form method="POST">
+    <div class="border border-danger, rounded">
+        <div class="form-group">
+
+            <label for="exampleFormControlTextarea1" class="left-aligned">제목</label>
+            <input class="form-control" type="text" placeholder="{{ blogs.title }}" readonly>
+
+            <label for="exampleFormControlTextarea1">날짜</label>
+            <input class="form-control" type="text" placeholder="{{ blogs.pub_date }}" readonly>
+
+
+
+            <label for="exampleFormControlTextarea1">게시글</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                readonly="readonly">{{ blogs.body }}</textarea>
+        </div>
+</form>
+<br>
+<a class="btn btn-outline-primary" href="{% url 'edit' pk=blogs.pk %}" role="button">수정</a>
+<a class="btn btn-outline-danger" href="{% url 'remove' pk=blogs.pk %}" role="button">삭제</a>
+
+</div>
+<br>
+
+{% endblock %}
