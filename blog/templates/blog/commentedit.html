@@ -1,0 +1,12 @@
+{% extends 'blog/layout.html'%}
+{% load crispy_forms_tags %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form|crispy }}
+    </div>
+
+    <input class="btn btn-dark" type="submit" value="제출하기">
+</form>
+{% endblock %}

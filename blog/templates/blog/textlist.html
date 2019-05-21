@@ -14,7 +14,7 @@
     <tbody>
       <tr>
         <th scope="row">{{ blog.id }}</th>
-        <td><a class="nav-item nav-link" href="{% url 'home' pk=blog.pk %}">{{ blog.title }}</a></td>
+        <td><a class="nav-item nav-link" href="{% url 'home' blog.id %}">{{ blog.title }}</a></td>
         <td>{{ blog.pub_date }}</td>
         <td>{{ blog.body }}</td>
       </tr>
