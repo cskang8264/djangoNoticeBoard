@@ -12,4 +12,6 @@ urlpatterns = [
     path('blog/textlist/', views.textlist, name='textlist'),
     path('blog/<int:blog_id>/commentedit/<int:pk>/', views.commentedit, name='commentedit'),
     path('blog/<int:blog_id>/commentremove/<int:pk>/', views.commentremove, name='commentremove'),  
+    path('blog/hashtag/', views.hashtagform, name='hashtag'),
+    path('blog/<int:hashtag_id>/search/', views.search, name='search'),
 ]

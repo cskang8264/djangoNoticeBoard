@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<form method="POST">
+
     <div class="border border-danger, rounded">
         <div class="form-group">
 
@@ -19,11 +19,34 @@
             <label for="exampleFormControlTextarea1">게시글</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
                 readonly="readonly">{{ blogs.body }}</textarea>
+
+            <label for="exampleFormControlTextarea1">해시태그</label>
+            {% for hashtag in blogs.hashtags.all %}
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                readonly="readonly">{{ hashtag.name }}</textarea>
+            {% endfor %}
+            <label for="exampleFormControlTextarea1">이미지</label>
+
+            <div class="card" style="width: 18rem;">
+                {% if blogs.image %}
+                <img class="card-img-top" src="{{ blogs.image.url }}" alt="Card image cap">
+                {% endif %}
+                <div class="card-body">
+                  <h5 class="card-title">{{ blogs.imageTitle }}</h5>
+                  <p class="card-text">{{ blogs.imageText }}</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+              </div>
+          
         </div>
-</form>
+
+
+
 <br>
 <a class="btn btn-outline-primary" href="{% url 'edit' blogs.id %}" role="button">수정</a>
 <a class="btn btn-outline-danger" href="{% url 'remove' blogs.id %}" role="button">삭제</a>
+<a class="btn btn-outline-secondary" href="{% url 'textlist' %}" role="button">목록으로</a>
+
 
 
 
@@ -63,8 +86,7 @@
             <div class="panel-body">
                 {{ comment }}
             </div><!-- /panel-body -->
-            <a class="btn btn-outline-primary" href="{% url 'commentedit' blogs.id comment.id %}"
-                role="button">댓글수정</a>
+            <a class="btn btn-outline-primary" href="{% url 'commentedit' blogs.id comment.id %}" role="button">댓글수정</a>
             <a class="btn btn-outline-danger" href="{% url 'commentremove' blogs.id comment.id %}"
                 role="button">댓글삭제</a>
         </div><!-- /panel panel-default -->

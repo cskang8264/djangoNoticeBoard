@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
-from .forms import BlogForm, CommentForm
-from .models import Blog, Comment
+from .forms import BlogForm, CommentForm , HashtagForm
+from .models import Blog, Comment, Hashtag
 
 # Create your views here.
 
@@ -34,18 +34,36 @@ def createComment(request):
     return redirect('/blog/home/')
 
 
-def blogform(request, blog=None):
+def blogform(request, blog=None) :
     if request.method == 'POST':
-        form = BlogForm(request.POST, instance=blog)
+        form = BlogForm(request.POST, request.FILES ,instance=blog)
         if form.is_valid():  # 유효성검사
             blog = form.save(commit=False)
             blog.pub_date = timezone.now()
             blog.save()
+            form.save_m2m()
             return redirect('textlist')
     else:
         form = BlogForm(instance=blog)
         return render(request, 'blog/new.html', {'form': form})
 
+def hashtagform(request , hashtag=None):
+        if request.method =='POST':
+                form = HashtagForm(request.POST, instance= hashtag)
+                if form.is_valid():
+                        hashtag = form.save(commit=False)
+                        if Hashtag.objects.filter(name= form.cleaned_data['name']):     #이미 존재하는 해시태그일 경우 빈폼, 에러메시지 제공
+                                form = HashtagForm()
+                                error_message = "이미 존재하는 해시태그 입니다."
+                                return render(request, 'blog/hashtag.html', {'form':form, "error_message":error_message})
+                        else:
+                                hashtag.name = form.cleaned_data['name'] #새로운 해시태그이름을 hashtag.name에 넣는다
+                                hashtag.save()
+                                return redirect('textlist')
+
+        else:
+                form =  HashtagForm(instance=hashtag)
+                return render(request,'blog/hashtag.html', {'form' : form})
 
         
 
@@ -62,9 +80,19 @@ def remove(request, blog_id):
 
 def textlist(request):
     blogs = Blog.objects
-    return render(request, 'blog/textlist.html',{'blogs': blogs})
+    hashtags = Hashtag.objects
+    return render(request, 'blog/textlist.html',{'blogs': blogs ,'hashtags': hashtags})
 
-def home(request, blog_id, comment=None):
+def search(request, hashtag_id):
+    blogs = Blog.objects
+    hashtags = Hashtag.objects
+    hashtag = get_object_or_404(Hashtag, pk=hashtag_id)
+    return render(request, 'blog/search.html', {'hashtag':hashtag,'blogs': blogs ,'hashtags': hashtags})
+
+
+
+
+def home(request, blog_id, comment=None, hashtag=None):
     blogs = get_object_or_404(Blog, id=blog_id)
     if request.method =='POST':
         form = CommentForm(request.POST, instance=comment)
@@ -76,7 +104,7 @@ def home(request, blog_id, comment=None):
             return redirect('home', blog_id)       
     else:
         form = CommentForm(instance=comment)
-        return render(request, 'blog/home.html', {'blogs':blogs, 'form': form})
+        return render(request, 'blog/home.html', {'blogs':blogs, 'form': form, 'hashtag':hashtag })
 
 
 def commentedit(request ,blog_id, pk):
@@ -87,3 +115,6 @@ def commentremove(request, blog_id, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
     return redirect('home', blog_id)
+
+
+

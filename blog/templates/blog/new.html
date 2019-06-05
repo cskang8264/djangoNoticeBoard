@@ -19,12 +19,16 @@
         <input class="btn btn-dark" type="submit" value="제출하기">
     </form> -->
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
         <div class="form-group">
             
                 {{ form.title|as_crispy_field }}
                 {{ form.body|as_crispy_field }}
+                {{ form.hashtags|as_crispy_field}}
+                {{ form.image|as_crispy_field}}
+                {{ form.imageTitle|as_crispy_field}}
+                {{ form.imageText|as_crispy_field}}
         </div>
 
         <input class="btn btn-dark" type="submit" value="제출하기">

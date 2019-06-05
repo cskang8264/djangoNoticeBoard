@@ -1,0 +1,23 @@
+{% extends 'blog/layout.html' %}
+{% block content %} 
+{% load crispy_forms_tags %}
+<h1> 해시태그를 추가하는 페이지 입니다.</h1>
+    <br>
+{{ error_message }}
+    <form method="POST">
+            {% csrf_token %}
+        <div class="form-group">
+            
+            {{ form|crispy }}
+               
+        </div>
+
+        <input class="btn btn-dark" type="submit" value="제출하기">
+      </form>
+{% endblock %}
+
+
+
+<!-- {{form.as_table}} -> form의 내용이 table 형식으로 출력
+{{form.as_p}} -> form의 내용이 p 형식으로 출력
+{{form.as_ul}} -> form의 내용이 ul 형식으로 출력 -->
